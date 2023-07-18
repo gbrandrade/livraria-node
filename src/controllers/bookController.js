@@ -1,4 +1,4 @@
-import books from "../models/Book.js";
+import { books } from "../models/index.js";
 
 class BookController {
   static getBooks = async (req, res, next) => {
@@ -35,7 +35,11 @@ class BookController {
   static updateBook = async (req, res, next) => {
     const id = req.params.id;
     try {
-      const book = await books.findByIdAndUpdate(id, { $set: req.body });
+      const book = await books.findByIdAndUpdate(
+        id,
+        { $set: req.body },
+        { runValidators: true }
+      );
       if (book === null)
         res.status(404).send({ message: "Id do livro não localizado" });
       res.status(200).send({ message: "Livro atualizado com sucesso" });
