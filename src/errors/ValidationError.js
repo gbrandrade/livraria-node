@@ -1,6 +1,6 @@
-import RequisicaoIncorreta from "./RequisicaoIncorreta.js";
+import BadRequest from "./BadRequest.js";
 
-class ErroValidacao extends RequisicaoIncorreta {
+class ValidationError extends BadRequest {
   constructor(error) {
     const errorMsg = Object.values(error.errors)
       .map((err) => err.message)
@@ -10,4 +10,4 @@ class ErroValidacao extends RequisicaoIncorreta {
   }
 }
 
-export default ErroValidacao;
+export default ValidationError;

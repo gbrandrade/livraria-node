@@ -1,8 +1,8 @@
 import express from "express";
 import db from "./config/dbConnect.js";
 import routes from "./routes/index.js";
-import manipuladorDeErros from "./middlewares/manipuladorDeErros.js";
-import manipulador404 from "./middlewares/manipulador404.js";
+import errorHandler from "./middlewares/errorHandler.js";
+import handler404 from "./middlewares/handler404.js";
 
 db.on("erro", console.log.bind(console, "Erro de conexão"));
 db.once("open", () => {
@@ -14,8 +14,8 @@ const app = express();
 app.use(express.json());
 routes(app);
 
-app.use(manipulador404);
+app.use(handler404);
 
-app.use(manipuladorDeErros);
+app.use(errorHandler);
 
 export default app;
