@@ -1,10 +1,10 @@
 import { authors, books } from "../models/index.js";
 
 class BookController {
-  static getBooks = async (req, res, next) => {
+  static getBooks = (req, res, next) => {
     try {
-      const booksResult = await books.find().populate("autor", "nome").exec();
-      res.status(200).send(booksResult);
+      req.result = books.find();
+      next();
     } catch (error) {
       next(error);
     }
@@ -13,7 +13,7 @@ class BookController {
   static getBookById = async (req, res, next) => {
     const id = req.params.id;
     try {
-      const book = await books.findById(id).populate("autor", "nome").exec();
+      const book = await books.findById(id);
       if (book === null)
         return res.status(404).send({ message: "Id do livro não localizado" });
       res.status(200).send(book);
@@ -65,12 +65,9 @@ class BookController {
       const search = await handleFilters(req.query);
       if (search === null) return res.status(200).send([]);
 
-      const book = await books.find(search);
-      console.log(book);
-      if (book === null)
-        return res.status(404).send({ message: "Id do livro não localizado" });
-
-      res.status(200).send(book);
+      const book = books.find(search);
+      req.result = book;
+      next();
     } catch (error) {
       next(error);
     }
